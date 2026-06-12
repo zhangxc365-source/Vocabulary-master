@@ -1100,54 +1100,49 @@ export default function SingleAdventure({
       </div>
 
       {/* 3. Slim, elegant actions and powerups tray */}
-      <div className="bg-white py-6 px-8 border-t-4 border-black z-20">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-5">
-          <div className="flex flex-col">
-            <span className="text-sm sm:text-base text-[#1A1A1A] font-black uppercase tracking-wider flex items-center gap-1.5">
-              🔋 {t.powerUpTitle || '道具区'}
-            </span>
-            <span className="text-xs sm:text-sm text-gray-550 font-bold mt-1 max-w-2xl leading-relaxed">
-              {currentLanguage === Language.ZH 
-                ? '点击道具：未获取时“练习”答题，答对获取该道具；获取后处于“可使用”，点击对本局生效（每局限1个）' 
-                : 'Click power-up: practice to unlock when unavailable; click to use once earned (Max 1 each per round)'}
+      <div className="bg-white py-4 px-4 sm:py-5 sm:px-6 border-t-4 border-black z-20">
+        <div className="flex flex-col items-center justify-center gap-2.5 w-full">
+          <div className="flex items-center justify-center gap-1 flex-shrink-0">
+            <span className="text-xs sm:text-sm text-gray-500 font-black uppercase tracking-wider flex items-center gap-1">
+              🔮 {t.powerUpTitle || '道具区'}
             </span>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-6">
+          <div className="flex flex-row items-center justify-center gap-3 sm:gap-4 flex-wrap w-full max-w-2xl">
             {/* Freeze launcher tool */}
             {!freezeEarned ? (
               // Practice state
               <button
                 onClick={() => startPowerUpQuiz('FREEZE')}
                 disabled={isPaused}
-                className="flex items-center gap-2.5 p-5 px-7 bg-[#FFF8E1] hover:bg-[#FFECB3] active:translate-y-0.5 text-black font-black border-4 border-dashed border-[#FF8F00] rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-base sm:text-lg md:text-xl disabled:opacity-40 disabled:pointer-events-none"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 p-2.5 sm:p-3 px-4 sm:px-5 bg-[#FFF8E1] hover:bg-[#FFECB3] active:translate-y-0.5 text-black font-black border-3 border-dashed border-[#FF8F00] rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-sm sm:text-base disabled:opacity-40 disabled:pointer-events-none"
                 title={currentLanguage === Language.ZH ? '答题通过获取冰冻道具' : 'Answer correct to earn ICE FREEZE'}
                 id="powerup-freeze-practice"
               >
-                <GraduationCap size={22} className="text-[#FF8F00]" />
-                <span>{currentLanguage === Language.ZH ? '练习冰冻 ❄️ (0/1)' : 'Get Freeze ❄️ (0/1)'}</span>
+                <GraduationCap size={18} className="text-[#FF8F00]" />
+                <span>{currentLanguage === Language.ZH ? '练习 ❄️ (0/1)' : 'Get ❄️ (0/1)'}</span>
               </button>
             ) : freezeCount === 1 ? (
               // Earned & useable state
               <button
                 onClick={triggerFreeze}
                 disabled={isPaused || isFrozen}
-                className="flex items-center gap-2.5 p-5 px-7 bg-[#81D4FA] hover:bg-[#4FC3F7] active:translate-y-0.5 text-black font-black border-4 border-black rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-base sm:text-lg md:text-xl animate-pulse disabled:opacity-40 disabled:pointer-events-none"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 p-2.5 sm:p-3 px-4 sm:px-5 bg-[#81D4FA] hover:bg-[#4FC3F7] active:translate-y-0.5 text-black font-black border-3 border-black rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-sm sm:text-base animate-pulse disabled:opacity-40 disabled:pointer-events-none"
                 title={t.powerFreezeDesc}
                 id="powerup-freeze-launcher"
               >
-                <Snowflake size={22} className={isFrozen ? 'animate-spin' : 'animate-bounce'} />
-                <span>{currentLanguage === Language.ZH ? '使用冰冻 ❄️' : 'Use Freeze ❄️'}</span>
+                <Snowflake size={18} className={isFrozen ? 'animate-spin' : 'animate-bounce'} />
+                <span>{currentLanguage === Language.ZH ? '使用 ❄️' : 'Use ❄️'}</span>
               </button>
             ) : (
               // Already used state
               <button
                 disabled
-                className="flex items-center gap-2.5 p-5 px-7 bg-gray-100 text-gray-400 font-bold border-4 border-gray-300 rounded-2xl cursor-default text-base sm:text-lg md:text-xl opacity-70"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 p-2.5 sm:p-3 px-4 sm:px-5 bg-gray-100 text-gray-400 font-bold border-3 border-gray-300 rounded-xl cursor-default text-sm sm:text-base opacity-70"
                 id="powerup-freeze-used"
               >
-                <Snowflake size={22} />
-                <span>{currentLanguage === Language.ZH ? '已使用冰冻 (1/1) ❄️' : 'Freeze Used (1/1) ❄️'}</span>
+                <Snowflake size={18} />
+                <span>{currentLanguage === Language.ZH ? '已用 ❄️' : 'Used ❄️'}</span>
               </button>
             )}
 
@@ -1157,34 +1152,34 @@ export default function SingleAdventure({
               <button
                 onClick={() => startPowerUpQuiz('SLOW')}
                 disabled={isPaused}
-                className="flex items-center gap-2.5 p-5 px-7 bg-[#FFF8E1] hover:bg-[#FFECB3] active:translate-y-0.5 text-black font-black border-4 border-dashed border-[#FF8F00] rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-base sm:text-lg md:text-xl disabled:opacity-40 disabled:pointer-events-none"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 p-2.5 sm:p-3 px-4 sm:px-5 bg-[#FFF8E1] hover:bg-[#FFECB3] active:translate-y-0.5 text-black font-black border-3 border-dashed border-[#FF8F00] rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-sm sm:text-base disabled:opacity-40 disabled:pointer-events-none"
                 title={currentLanguage === Language.ZH ? '答题通过获取慢速道具' : 'Answer correct to earn SLOW LENS'}
                 id="powerup-slow-practice"
               >
-                <GraduationCap size={22} className="text-[#FF8F00]" />
-                <span>{currentLanguage === Language.ZH ? '练习慢速 👁️ (0/1)' : 'Get Slow 👁️ (0/1)'}</span>
+                <GraduationCap size={18} className="text-[#FF8F00]" />
+                <span>{currentLanguage === Language.ZH ? '练习 👁️ (0/1)' : 'Get 👁️ (0/1)'}</span>
               </button>
             ) : slowLensCount === 1 ? (
               // Earned & useable state
               <button
                 onClick={triggerSlowLens}
                 disabled={isPaused || isSlowLens}
-                className="flex items-center gap-2.5 p-5 px-7 bg-[#CE93D8] hover:bg-[#BA68C8] active:translate-y-0.5 text-black font-black border-4 border-black rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-base sm:text-lg md:text-xl animate-pulse disabled:opacity-40 disabled:pointer-events-none"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 p-2.5 sm:p-3 px-4 sm:px-5 bg-[#CE93D8] hover:bg-[#BA68C8] active:translate-y-0.5 text-black font-black border-3 border-black rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-sm sm:text-base animate-pulse disabled:opacity-40 disabled:pointer-events-none"
                 title={t.powerSizereducerDesc}
                 id="powerup-buffer-launcher"
               >
-                <Eye size={22} className="animate-bounce" />
-                <span>{currentLanguage === Language.ZH ? '使用慢速 👁️' : 'Use Slow 👁️'}</span>
+                <Eye size={18} className="animate-bounce" />
+                <span>{currentLanguage === Language.ZH ? '使用 👁️' : 'Use 👁️'}</span>
               </button>
             ) : (
               // Already used state
               <button
                 disabled
-                className="flex items-center gap-2.5 p-5 px-7 bg-gray-100 text-gray-400 font-bold border-4 border-gray-300 rounded-2xl cursor-default text-base sm:text-lg md:text-xl opacity-70"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 p-2.5 sm:p-3 px-4 sm:px-5 bg-gray-100 text-gray-400 font-bold border-3 border-gray-300 rounded-xl cursor-default text-sm sm:text-base opacity-70"
                 id="powerup-slow-used"
               >
-                <Eye size={22} />
-                <span>{currentLanguage === Language.ZH ? '已使用慢速 (1/1) 👁️' : 'Slow Used (1/1) 👁️'}</span>
+                <Eye size={18} />
+                <span>{currentLanguage === Language.ZH ? '已用 👁️' : 'Used 👁️'}</span>
               </button>
             )}
 
@@ -1194,34 +1189,34 @@ export default function SingleAdventure({
               <button
                 onClick={() => startPowerUpQuiz('HINT')}
                 disabled={isPaused}
-                className="flex items-center gap-2.5 p-5 px-7 bg-[#FFF8E1] hover:bg-[#FFECB3] active:translate-y-0.5 text-black font-black border-4 border-dashed border-[#FF8F00] rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-base sm:text-lg md:text-xl disabled:opacity-40 disabled:pointer-events-none"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 p-2.5 sm:p-3 px-4 sm:px-5 bg-[#FFF8E1] hover:bg-[#FFECB3] active:translate-y-0.5 text-black font-black border-3 border-dashed border-[#FF8F00] rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-sm sm:text-base disabled:opacity-40 disabled:pointer-events-none"
                 title={currentLanguage === Language.ZH ? '答题通过获取提示道具' : 'Answer correct to earn CORRECT HIGH HINT'}
                 id="powerup-hint-practice"
               >
-                <GraduationCap size={22} className="text-[#FF8F00]" />
-                <span>{currentLanguage === Language.ZH ? '练习提示 ✨ (0/1)' : 'Get Hint ✨ (0/1)'}</span>
+                <GraduationCap size={18} className="text-[#FF8F00]" />
+                <span>{currentLanguage === Language.ZH ? '练习 ✨ (0/1)' : 'Get ✨ (0/1)'}</span>
               </button>
             ) : hintCount === 1 ? (
               // Earned & useable state
               <button
                 onClick={triggerHint}
                 disabled={isPaused || highlightCorrectBasket}
-                className="flex items-center gap-2.5 p-5 px-7 bg-[#A5D6A7] hover:bg-[#81C784] active:translate-y-0.5 text-black font-black border-4 border-black rounded-2xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-base sm:text-lg md:text-xl animate-pulse disabled:opacity-40 disabled:pointer-events-none"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 p-2.5 sm:p-3 px-4 sm:px-5 bg-[#A5D6A7] hover:bg-[#81C784] active:translate-y-0.5 text-black font-black border-3 border-black rounded-xl shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] transition-all cursor-pointer text-sm sm:text-base animate-pulse disabled:opacity-40 disabled:pointer-events-none"
                 title={t.powerTipDesc}
                 id="powerup-hint-launcher"
               >
-                <Sparkles size={22} className={highlightCorrectBasket ? 'animate-pulse' : 'animate-bounce'} />
-                <span>{currentLanguage === Language.ZH ? '使用提示 ✨' : 'Use Hint ✨'}</span>
+                <Sparkles size={18} className={highlightCorrectBasket ? 'animate-pulse' : 'animate-bounce'} />
+                <span>{currentLanguage === Language.ZH ? '使用 ✨' : 'Use ✨'}</span>
               </button>
             ) : (
               // Already used state
               <button
                 disabled
-                className="flex items-center gap-2.5 p-5 px-7 bg-gray-100 text-gray-400 font-bold border-4 border-gray-300 rounded-2xl cursor-default text-base sm:text-lg md:text-xl opacity-70"
+                className="flex-1 sm:flex-none flex items-center justify-center gap-2 p-2.5 sm:p-3 px-4 sm:px-5 bg-gray-100 text-gray-400 font-bold border-3 border-gray-300 rounded-xl cursor-default text-sm sm:text-base opacity-70"
                 id="powerup-hint-used"
               >
-                <Sparkles size={22} />
-                <span>{currentLanguage === Language.ZH ? '已使用提示 (1/1) ✨' : 'Hint Used (1/1) ✨'}</span>
+                <Sparkles size={18} />
+                <span>{currentLanguage === Language.ZH ? '已用 ✨' : 'Used ✨'}</span>
               </button>
             )}
           </div>
