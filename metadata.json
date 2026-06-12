@@ -1,0 +1,6 @@
+{
+  "name": "词汇大师 (Vocabulary Master)",
+  "description": "An interactive, visually dynamic Chinese vocabulary game for YCT 1-6 learners. Features drag-and-drop categorization in Single Player and slice-the-odd-one-out in split-screen Dual Player across English, Mongolian, and Chinese translation modes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
