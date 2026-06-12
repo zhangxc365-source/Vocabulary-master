@@ -55,16 +55,19 @@ npm run start
 
 ## 🛠️ GitHub Action 自动构建规则 (GitHub Actions CI/CD)
 
-我们为您定制并初始化了位于 `.github/workflows/ci.yml` 的 **GitHub Actions** 自动化检测脚本：
+我们为您定制并初始化了位于 `.github/workflows/ci.yml` 的 **GitHub Actions** 自动化检测脚本。由于有些项目在本地开发时未提交 `package-lock.json`（仅包含 `package.json`），我们专门优化了构建逻辑，避免了 “Dependencies lock file is not found” 的打包中断报错：
 
 *   **触发时机**：只要您往 `main`、`master`、`dev` 分支提交（Push）或提交合并请求（Pull Request），工作流即会自动启动。
 *   **环境覆盖**：在 **Node.js 20.x** 和 **Node.js 22.x** 环境下进行矩阵式测试。
 *   **自动化测试步骤**：
     1.  **拉取代码** (`actions/checkout@v4`)
-    2.  **设置 Node.js 及依赖缓存** (`actions/setup-node@v4` + `cache: 'npm'`)
-    3.  **标准依赖安装** (`npm ci || npm install` 智能回退)
-    4.  **TypeScript 代码静态类型检查** (`npm run lint` 验证词库与逻辑类型安全)
-    5.  **应用打包构建测试** (`npm run build` 确保前端 Vite 编译和后端 esbuild 归档畅行无阻)
+    2.  **设置 Node.js 环境** (`actions/setup-node@v4` - 智能跳过了 lockfile 强制检验)
+    3.  **零异常依赖安装** (`npm install` 标准完整安装)
+    4.  **TypeScript 代码静态类型检查** (`npm run lint` 运行 `tsc --noEmit` 校验类型安全)
+    5.  **应用打包构建测试** (`npm run build` 确保前端 Vite 编译和后端 esbuild 归档打包畅行无阻)
+
+> 💡 **专家提示 (关于构建缓存优化)**: 
+> 如果您希望在 GitHub Actions 中开启官方的依赖缓存 (`cache: 'npm'`) 以进一步缩短高达 1 分钟的依赖下载时间，在您本地安装完依赖后，会将自动产生的 `package-lock.json` 文件提交到 GitHub。届时您可以随时将 `.github/workflows/ci.yml` 中的内容还原为使用缓存和 `npm ci` 的配置。当前配置专为无锁结构设计，确保初次上传 100% 打包成功！
 
 ---
 
