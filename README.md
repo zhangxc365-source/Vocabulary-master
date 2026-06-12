@@ -53,21 +53,43 @@ npm run start
 
 ---
 
-## 🛠️ GitHub Action 自动构建规则 (GitHub Actions CI/CD)
+## 🛠️ GitHub Action 自动构建与 Pages 部署规则 (GitHub Actions CI/CD)
 
-我们为您定制并初始化了位于 `.github/workflows/ci.yml` 的 **GitHub Actions** 自动化检测脚本。由于有些项目在本地开发时未提交 `package-lock.json`（仅包含 `package.json`），我们专门优化了构建逻辑，避免了 “Dependencies lock file is not found” 的打包中断报错：
+我们为您定制并初始化了位于 `.github/workflows/ci.yml` 的 **GitHub Actions** 自动化检测与自动部署脚本：
 
-*   **触发时机**：只要您往 `main`、`master`、`dev` 分支提交（Push）或提交合并请求（Pull Request），工作流即会自动启动。
-*   **环境覆盖**：在 **Node.js 20.x** 和 **Node.js 22.x** 环境下进行矩阵式测试。
-*   **自动化测试步骤**：
+*   **触发条件**：只要您往 `main`、`master` 分支提交（Push）代码，工作流就会自动启动，并在编译完成后**全自动发布最新代码至 GitHub Pages**！
+*   **环境覆盖**：在 **Node.js 22.x**（当前最佳 LTS 编译版本）环境下顺畅进行。
+*   **自动化测试与部署步骤**：
     1.  **拉取代码** (`actions/checkout@v4`)
-    2.  **设置 Node.js 环境** (`actions/setup-node@v4` - 智能跳过了 lockfile 强制检验)
+    2.  **设置 Node.js 环境** (`actions/setup-node@v4` - 智能跳过了 lockfile 强制检验，即使没有 `package-lock.json` 也 100% 成功过关)
     3.  **零异常依赖安装** (`npm install` 标准完整安装)
-    4.  **TypeScript 代码静态类型检查** (`npm run lint` 运行 `tsc --noEmit` 校验类型安全)
-    5.  **应用打包构建测试** (`npm run build` 确保前端 Vite 编译和后端 esbuild 归档打包畅行无阻)
+    4.  **TypeScript 代码静态类型检查** (`npm run lint` 验证词库与逻辑类型安全)
+    5.  **应用打包构建测试** (`npm run build` 确保前端 Vite 编译和后端 esbuild 归档打包畅行无阻，在 `dist/` 目录下生成静态网页文件)
+    6.  **全自动部署** (`JamesIves/github-pages-deploy-action@v4`) - 将生成的 `dist/` 静态网页目录自动打包发布到独立且干净的 `gh-pages` 分支。
 
-> 💡 **专家提示 (关于构建缓存优化)**: 
-> 如果您希望在 GitHub Actions 中开启官方的依赖缓存 (`cache: 'npm'`) 以进一步缩短高达 1 分钟的依赖下载时间，在您本地安装完依赖后，会将自动产生的 `package-lock.json` 文件提交到 GitHub。届时您可以随时将 `.github/workflows/ci.yml` 中的内容还原为使用缓存和 `npm ci` 的配置。当前配置专为无锁结构设计，确保初次上传 100% 打包成功！
+---
+
+## ⚙️ 在 GitHub 仓库进行部署配置的极简两步
+
+当您将代码推送到 GitHub 并成功触发第一次 Action 后，请在您的 GitHub 仓库网页端进行以下两项配置，即可瞬间上线您的游戏：
+
+### 1️⃣ 第一步：开启 Actions 的写入权限 (至关重要 ⚠️)
+因为自动化脚本需要将编译好的 `dist` 目录推送到您的 `gh-pages` 分支，您必须确保 Actions 拥有写入（Write）权限：
+1. 打开您的 GitHub 仓库页，点击最上方的 **Settings** 选项卡。
+2. 在左侧栏找到 **Actions** -> 点击 **General**。
+3. 滑动到页面最底部，找到 **Workflow permissions**（工作流权限）。
+4. 将默认的 *Read repository contents and packages permissions* 选项修改为 **Read and write permissions** (读写权限)。
+5. 点击下方绿色的 **Save** 按钮保存。
+
+### 2️⃣ 第二步：在 Actions 跑完后配置 Pages
+在您的第一次 Action 编译绿灯通过（通常在您第一次 Push 代码后的 1~2 分钟内）后，GitHub 会自动为您生成一个名为 `gh-pages` 的分支。此时去启动 Pages 服务面板：
+1. 点击仓库最上方的 **Settings** 选项卡。
+2. 在左侧菜单中选择 **Pages**。
+3. 在 **Build and deployment** -> **Source** 下拉菜单中选择 **Deploy from a branch**（默认就是此项）。
+4. 在 **Branch** 下拉菜单中，选择 **`gh-pages`** 分支（注意：**绝对不要选择 main 或 master**），右侧文件夹保持默认的 **`/ (root)`** 即可。
+5. 点击 **Save** 按钮。
+
+🎉 **大功告成！** 保存完毕后轻轻刷新，页面上方就会亮起一个醒目的专属网址栏：Your site is live at `https://您的用户名.github.io/zhangxc365-source/`。此后只要您在本地或在此修改并 `git push` 提交，网站就会跟随自动更新，永远保持最新最棒的状态！
 
 ---
 

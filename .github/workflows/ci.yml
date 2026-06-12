@@ -6,13 +6,17 @@ on:
   pull_request:
     branches: [ main, master, dev ]
 
+# This permission is required to allow the runner to push built code to the gh-pages branch
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [20.x, 22.x]
+        node-version: [22.x]
 
     steps:
     - name: Checkout repository
@@ -31,3 +35,11 @@ jobs:
 
     - name: Build application
       run: npm run build
+
+    - name: Deploy to GitHub Pages 🚀
+      if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: dist # The directory where your built static web files live
+        branch: gh-pages # The target branch that GitHub Pages will serve from
+        clean: true # Automatically remove old files no longer in the build
